@@ -30,7 +30,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install package.json
-      - run: npm run build
+      - run: vue-cli-service build --mode production
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
