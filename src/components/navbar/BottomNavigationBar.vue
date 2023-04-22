@@ -3,15 +3,18 @@
     <NavbarItem
         label="채팅"
         icon="mdi-message-text"
-        :selected="selectedLabel === 'chat'"></NavbarItem>
+        :selected="selectedLabel === 'chat'"
+        path="chat"></NavbarItem>
     <NavbarItem
         label="검색"
         icon="mdi-account-search"
-        :selected="selectedLabel === 'search'"></NavbarItem>
+        :selected="selectedLabel === 'search'"
+        path="search"></NavbarItem>
     <NavbarItem
         label="설정"
         icon="mdi-cog"
-        :selected="selectedLabel === 'setting'"></NavbarItem>
+        :selected="selectedLabel === 'setting'"
+        path="setting"></NavbarItem>
   </div>
 </template>
 

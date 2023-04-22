@@ -1,11 +1,13 @@
 <template>
-  <div class="navbtn-root">
+  <div class="navbtn-root" @click="clicked">
     <v-icon :icon="icon" class="navbtn-icon" :class="selected ? 'selected' : ''"></v-icon>
     <div class="navbtn-label" :class="selected ? 'selected' : ''">{{ label }}</div>
   </div>
 </template>
 
 <script>
+import {gotoPage} from "@/js/route";
+
 export default {
   name: "NavbarItem",
   props: {
@@ -20,6 +22,15 @@ export default {
     selected: {
       type: Boolean,
       default: false
+    },
+    path: {
+      type: String,
+      default: 'chat'
+    }
+  },
+  methods: {
+    clicked() {
+      gotoPage(this.path)
     }
   }
 }
