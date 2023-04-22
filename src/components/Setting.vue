@@ -1,7 +1,7 @@
 <template>
   <DefaultPage>
     <template v-slot:content>
-      <div>setting</div>
+      <div style="color: white">setting</div>
     </template>
   </DefaultPage>
 </template>

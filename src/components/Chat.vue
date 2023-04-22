@@ -1,7 +1,7 @@
 <template>
   <DefaultPage>
     <template v-slot:content>
-      <div>chat</div>
+      <div style="color: white">chat</div>
     </template>
   </DefaultPage>
 </template>
