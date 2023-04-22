@@ -1,7 +1,7 @@
 <template>
   <div class="navbtn-root">
-    <v-icon :icon="icon" class="navbtn-icon"></v-icon>
-    <div class="navbtn-label">{{ label }}</div>
+    <v-icon :icon="icon" class="navbtn-icon" :class="selected ? 'selected' : ''"></v-icon>
+    <div class="navbtn-label" :class="selected ? 'selected' : ''">{{ label }}</div>
   </div>
 </template>
 
@@ -16,6 +16,10 @@ export default {
     icon: {
       type: String,
       default: "mdi-vuetify"
+    },
+    selected: {
+      type: Boolean,
+      default: false
     }
   }
 }

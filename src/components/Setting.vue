@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage>
+  <DefaultPage selected-label="setting">
     <template v-slot:content>
       <div style="color: white">setting</div>
     </template>

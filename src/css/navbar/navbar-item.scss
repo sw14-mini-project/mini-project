@@ -39,3 +39,7 @@
   order: 1;
   flex-grow: 0;
 }
+
+.selected {
+  color: $bottom-navbar-color-selected!important;
+}

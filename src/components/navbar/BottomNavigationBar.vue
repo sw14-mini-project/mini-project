@@ -1,8 +1,17 @@
 <template>
   <div id="root-bottom-navbar">
-    <NavbarItem label="채팅" icon="mdi-message-text"></NavbarItem>
-    <NavbarItem label="검색" icon="mdi-account-search"></NavbarItem>
-    <NavbarItem label="설정" icon="mdi-cog"></NavbarItem>
+    <NavbarItem
+        label="채팅"
+        icon="mdi-message-text"
+        :selected="selectedLabel === 'chat'"></NavbarItem>
+    <NavbarItem
+        label="검색"
+        icon="mdi-account-search"
+        :selected="selectedLabel === 'search'"></NavbarItem>
+    <NavbarItem
+        label="설정"
+        icon="mdi-cog"
+        :selected="selectedLabel === 'setting'"></NavbarItem>
   </div>
 </template>
 
@@ -10,7 +19,13 @@
 import NavbarItem from "@/components/navbar/NavbarItem";
 export default {
   name: "BottomNavigationBar",
-  components: {NavbarItem}
+  components: {NavbarItem},
+  props: {
+    selectedLabel: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 

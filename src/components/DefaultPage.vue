@@ -3,7 +3,7 @@
     <div id="default-content">
       <slot name="content"></slot>
     </div>
-    <BottomNavigationBar></BottomNavigationBar>
+    <BottomNavigationBar :selected-label="selectedLabel"></BottomNavigationBar>
   </div>
 </template>
 
@@ -12,7 +12,13 @@ import BottomNavigationBar from "@/components/navbar/BottomNavigationBar.vue";
 
 export default {
   name: "DefaultPage",
-  components: {BottomNavigationBar}
+  components: {BottomNavigationBar},
+  props: {
+    selectedLabel: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 

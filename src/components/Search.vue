@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage>
+  <DefaultPage selected-label="search">
     <template v-slot:content>
       <div style="color: white">search</div>
     </template>
