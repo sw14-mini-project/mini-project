@@ -1,7 +1,7 @@
 <template>
   <DefaultPage>
     <template v-slot:content>
-      <div>search</div>
+      <div style="color: white">search</div>
     </template>
   </DefaultPage>
 </template>

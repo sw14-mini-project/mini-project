@@ -1,6 +1,8 @@
 <template>
   <div id="default-root">
-    <slot name="content"></slot>
+    <div id="default-content">
+      <slot name="content"></slot>
+    </div>
   </div>
 </template>
 
