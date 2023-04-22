@@ -8,6 +8,6 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+@import "../css/component/default-page.scss";
 </style>
