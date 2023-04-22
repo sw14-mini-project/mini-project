@@ -19,4 +19,11 @@
   height: calc(100% - $bottom-navbar-height);
 
   overflow-y: scroll;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#default-content::-webkit-scrollbar {
+  display: none;
 }

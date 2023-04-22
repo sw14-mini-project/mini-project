@@ -8,6 +8,13 @@ body {
   height: 100%;
   position: relative;
   background: $default-background-color;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 #app {
