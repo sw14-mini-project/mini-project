@@ -1,10 +1,16 @@
 <template>
-  <div>setting</div>
+  <DefaultPage>
+    <template v-slot:content>
+      <div>setting</div>
+    </template>
+  </DefaultPage>
 </template>
 
 <script>
+import DefaultPage from "@/components/DefaultPage";
 export default {
-  name: "SettingComponent"
+  name: "SettingComponent",
+  components: {DefaultPage}
 }
 </script>
 
