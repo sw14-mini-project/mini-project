@@ -15,7 +15,7 @@
           </v-btn>
         </v-container>
         <v-container class="pa-0">
-          <v-btn variant="outlined" style="width: 100%">
+          <v-btn variant="outlined" style="width: 100%" @click="onClickSignUp">
             회원가입
           </v-btn>
         </v-container>
@@ -61,8 +61,7 @@ export default {
   },
   setup() {
     if (auth.currentUser !== null) {
-      // gotoPage("chat")
-      auth.signOut()
+      gotoPage("chat")
     }
   },
   methods: {
@@ -80,6 +79,9 @@ export default {
               this.snackbarShow = true
             });
       }
+    },
+    onClickSignUp() {
+      gotoPage("signup")
     }
   }
 }
