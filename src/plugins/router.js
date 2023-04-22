@@ -3,6 +3,8 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import ChatComponent from "@/components/Chat";
 import SettingComponent from "@/components/Setting";
 import SearchComponent from "@/components/Search";
+import LoginComponent from "@/components/account/Login";
+import SignUpComponent from "@/components/account/SignUp";
 
 // Vue 라우터 인스턴스 생성
 const router = new createRouter({
@@ -13,6 +15,8 @@ const router = new createRouter({
         {path: '/chat', component: ChatComponent, name: 'chat'},
         {path: '/set', component: SettingComponent, name: 'setting'},
         {path: '/search', component: SearchComponent, name: 'search'},
+        {path: '/login', component: LoginComponent, name: 'login'},
+        {path: '/signup', component: SignUpComponent, name: 'signup'},
     ]
 });
 

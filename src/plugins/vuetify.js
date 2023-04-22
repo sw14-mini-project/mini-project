@@ -5,14 +5,11 @@ import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 
 const myCustomLightTheme = {
-    dark: false,
-    // colors: {
-    //     light_magenta: '#6750A4',
-    //     light_brown: '#7D5260',
-    //     color_accept: '#5373C3',
-    //     color_deny: '#E24343',
-    //     color_second: '#5E5E5E',
-    // }
+    dark: true,
+    colors: {
+        accent_pink: '#E93B84',
+        default_color: '#1A1C1E',
+    }
 }
 
 const vuetify = createVuetify({
