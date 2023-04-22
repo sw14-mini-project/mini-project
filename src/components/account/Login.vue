@@ -60,9 +60,11 @@ export default {
     }
   },
   setup() {
-    if (auth.currentUser !== null) {
-      gotoPage("chat")
-    }
+    auth.onAuthStateChanged((user) => {
+      if (user !== null) {
+        gotoPage("chat")
+      }
+    })
   },
   methods: {
     onLoginClicked() {

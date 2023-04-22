@@ -4,7 +4,7 @@
       <div id="signup-root">
         <div id="login-title">소마팅 회원가입</div>
         <v-container class="pa-0 mt-4">
-          <v-text-field v-model="email" label="아이디" variant="outlined" type="email"></v-text-field>
+          <v-text-field v-model="email" label="이메일" variant="outlined" type="email"></v-text-field>
         </v-container>
 
         <v-container class="pa-0">
@@ -16,7 +16,7 @@
         </v-container>
 
         <v-container class="pa-0">
-          <v-text-field v-model="username" label="닉네임" variant="outlined"></v-text-field>
+          <v-text-field v-model="username" label="이름" variant="outlined"></v-text-field>
         </v-container>
 
         <v-container class="pa-0">
@@ -32,26 +32,64 @@
         </v-container>
 
         <v-container class="pa-0">
-          <v-btn variant="outlined" style="width: 100%" @click="onClickSignUp" color="accent_pink">
+          <v-btn variant="outlined" style="width: 100%" @click="onClickSignUpProcess" color="accent_pink">
             회원가입
           </v-btn>
         </v-container>
       </div>
+
+      <v-snackbar
+          v-model="snackbarShow"
+      >
+        {{ snackbarMsg }}
+        <template v-slot:actions>
+          <v-btn
+              color="pink"
+              variant="text"
+              @click="snackbarShow = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+
+      <v-dialog
+          v-model="showLoadingDialog"
+          width="auto"
+      >
+        <DialogComponent
+            :dialog-type="this.DIALOG_TYPE_PROGRESS_LINEAR_INFINITY"
+            title="회원가입 중..."
+            subtitle="회원가입 처리중 입니다."
+        ></DialogComponent>
+      </v-dialog>
     </template>
   </DefaultPage>
 </template>
 
 <script>
 import DefaultPage from "@/components/DefaultPage";
-import { ref } from "firebase/database";
-import {database} from "@/plugins/firebase";
+import { database, auth } from "@/plugins/firebase";
+
+import { ref, set } from "firebase/database";
 import {getStackData} from "@/js/realtime-database";
+
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import {emailRegexCheck} from "@/js/accont-check";
+import {gotoPage} from "@/js/route";
+import DialogComponent from "@/components/dialog/Dialog";
 
 const dbRef = ref(database);
 
+const showSnackbar = (context, msg) => {
+  context.snackbarShow = false
+  context.snackbarMsg = msg
+  context.snackbarShow = true
+}
+
 export default {
   name: "SignUpComponent",
-  components: {DefaultPage},
+  components: {DialogComponent, DefaultPage},
   data() {
     return {
       passwordCheck: '',
@@ -59,8 +97,21 @@ export default {
       email: '',
       username: '',
       selectedStack: [],
-      stack: {}
+      stack: {},
+      snackbarShow: false,
+      snackbarMsg: "",
+      showLoadingDialog: false
     }
+  },
+  setup() {
+    let once = 1
+    auth.onAuthStateChanged((user) => {
+      console.log(once)
+      if (user !== null && once === 1) {
+        gotoPage("chat")
+      }
+      once = 0
+    })
   },
   beforeMount() {
     getStackData(this, dbRef)
@@ -71,8 +122,52 @@ export default {
         'background': color
       }
     },
-    onClickSignUp() {
-      console.log(this.selectedStack)
+    async onClickSignUpProcess() {
+      if (!this.email || !this.password ||
+          !this.passwordCheck || !this.username) {
+        showSnackbar(this, "모든 빈칸을 채워야 합니다.")
+        return
+      }
+      if (this.selectedStack.length === 0) {
+        showSnackbar(this, "스택은 하나 이상 선택해야 합니다.")
+        return
+      }
+      if (!emailRegexCheck(this, this.email)) {
+        showSnackbar(this, "이메일 형식이 틀렸습니다.")
+        return
+      }
+      if (this.password !== this.passwordCheck) {
+        showSnackbar(this, "비밀번호 확인이 다릅니다.")
+        return
+      }
+      if (this.username > 6) {
+        showSnackbar(this, "이름은 6글자 이하여야 합니다.")
+        return
+      }
+
+      try {
+        this.showLoadingDialog = true
+        const signUpResult = await createUserWithEmailAndPassword(auth, this.email, this.password)
+        const uid = signUpResult.user.uid
+        await set(ref(database, 'users/' + uid), {
+          username: this.username,
+          email: this.email,
+          stack: Object.values(this.selectedStack)
+        });
+        gotoPage("chat")
+      } catch (e) {
+        await auth.onAuthStateChanged(async (user) => {
+          if (user !== null) {
+            await user.delete()
+          }
+          const errorMessage = e.message;
+          this.snackbarShow = false
+          this.snackbarMsg = errorMessage
+          this.snackbarShow = true
+        })
+      } finally {
+        this.showLoadingDialog = false
+      }
     }
   }
 }

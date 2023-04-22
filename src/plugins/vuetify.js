@@ -8,6 +8,7 @@ const myCustomLightTheme = {
     dark: true,
     colors: {
         accent_pink: '#E93B84',
+        default_color: '#1A1C1E',
     }
 }
 

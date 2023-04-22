@@ -65,6 +65,13 @@ import {gotoPage} from "@/js/route";
 export default {
   name: "SettingComponent",
   components: {DefaultPage},
+  setup() {
+    auth.onAuthStateChanged((user) => {
+      if (user === null) {
+        gotoPage("login")
+      }
+    })
+  },
   methods: {
     async onLogOutClicked() {
       await auth.signOut()
