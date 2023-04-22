@@ -1,9 +1,9 @@
 <template>
   <div id="default-root">
-    <div id="default-content">
+    <div id="default-content" :class="showNavbar ? '' : 'navbar-not-exist'">
       <slot name="content"></slot>
     </div>
-    <BottomNavigationBar :selected-label="selectedLabel"></BottomNavigationBar>
+    <BottomNavigationBar v-if="showNavbar" :selected-label="selectedLabel"></BottomNavigationBar>
   </div>
 </template>
 
@@ -17,6 +17,10 @@ export default {
     selectedLabel: {
       type: String,
       default: ''
+    },
+    showNavbar: {
+      type: Boolean,
+      default: true
     }
   }
 }

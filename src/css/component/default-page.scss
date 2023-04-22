@@ -24,6 +24,10 @@
   scrollbar-width: none;
 }
 
+.navbar-not-exist {
+  height: 100%!important;
+}
+
 #default-content::-webkit-scrollbar {
   display: none;
 }

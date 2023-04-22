@@ -5,7 +5,7 @@ import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 
 const myCustomLightTheme = {
-    dark: false,
+    dark: true,
     // colors: {
     //     light_magenta: '#6750A4',
     //     light_brown: '#7D5260',
