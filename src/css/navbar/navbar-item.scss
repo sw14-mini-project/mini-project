@@ -1,0 +1,41 @@
+.navbtn-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+
+  width: 24px;
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.navbtn-icon {
+  width: 24px;
+  height: 24px;
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+  color: $bottom-navbar-color-unselected;
+}
+
+.navbtn-label {
+  width: 23px;
+  height: 16px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+
+  text-align: center;
+
+  color: $bottom-navbar-color-unselected;
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
