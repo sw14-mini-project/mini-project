@@ -53,15 +53,31 @@
   </div>
 
   <button class="setting-button">그 외 다른 설정</button>
+  <button class="setting-button" @click="onLogOutClicked">로그아웃</button>
     </template>
   </DefaultPage>
 </template>
 
 <script>
 import DefaultPage from "@/components/DefaultPage";
+import {auth} from "@/plugins/firebase";
+import {gotoPage} from "@/js/route";
 export default {
   name: "SettingComponent",
-  components: {DefaultPage}
+  components: {DefaultPage},
+  setup() {
+    auth.onAuthStateChanged((user) => {
+      if (user === null) {
+        gotoPage("login")
+      }
+    })
+  },
+  methods: {
+    async onLogOutClicked() {
+      await auth.signOut()
+      gotoPage('login')
+    }
+  }
 }
 </script>
 
