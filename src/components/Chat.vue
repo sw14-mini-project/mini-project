@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage>
+  <DefaultPage selected-label="chat">
     <template v-slot:content>
       <div style="color: white">chat</div>
     </template>

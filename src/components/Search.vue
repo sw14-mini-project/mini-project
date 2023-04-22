@@ -1,6 +1,7 @@
 <template>
-  <DefaultPage>
+  <DefaultPage selected-label="search">
     <template v-slot:content>
+    <!--   여기 안에 구현하시면 됩니다.   -->
       <div style="color: white">search</div>
     </template>
   </DefaultPage>
