@@ -2,7 +2,7 @@
   <DefaultPage selected-label="search">
     <template v-slot:content>
       <div class="main-card">
-        <div class="card-upper">
+        <div class="card-upper" :style="{ backgroundImage: 'url(' + images[currentIdx] + ')' }">
           <img class="card-image">
         </div>
         <div class="card-title">
@@ -38,6 +38,24 @@ export default {
         gotoPage("login")
       }
     })
+  },
+  data() {
+    return {
+      currentIdx: 0,
+      images: ["https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg",
+        "https://cdn.pixabay.com/photo/2016/02/13/12/26/aurora-1197753__340.jpg",
+        "https://cdn.pixabay.com/photo/2015/02/24/15/41/wolf-647528__340.jpg",
+        "https://cdn.pixabay.com/photo/2017/08/15/08/23/stars-2643089__340.jpg",
+        "https://cdn.pixabay.com/photo/2017/08/24/03/41/starry-sky-2675322__340.jpg",
+        "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616__340.jpg",
+        "https://cdn.pixabay.com/photo/2020/07/27/14/34/forest-5442598__340.jpg",
+        "https://cdn.pixabay.com/photo/2020/04/30/20/14/sky-5114501__340.jpg",
+        "https://cdn.pixabay.com/photo/2016/11/18/22/58/stars-1837306__340.jpg"
+      ]
+    };
+  },
+  created() {
+    this.currentIdx = Math.floor(Math.random() * this.images.length);
   }
 }
 </script>
