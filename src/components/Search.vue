@@ -1,14 +1,15 @@
 <template>
   <DefaultPage selected-label="search">
     <template v-slot:content>
-      <div class="main-card">
-        <div class="card-upper" :style="{ backgroundImage: 'url(' + images[currentIdx] + ')' }">
+      <div class="main-card" @mousedown="handleMouseDown" @mousemove="handleMouseMove" @mouseup="handleMouseUp"
+       @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+        <div class="card-upper" :style="{ backgroundImage: 'url(' + images[currentIdx % images.length] + ')' }">
           <img class="card-image">
         </div>
         <div class="card-title">
-          이름
+          {{users[currentIdx].title}}
           <div class="card-text">
-            내용
+            {{users[currentIdx].text}}
           </div>
         </div>
       </div>
@@ -42,7 +43,8 @@ export default {
   data() {
     return {
       currentIdx: 0,
-      images: ["https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg",
+      images: [ // 임의의 이미지 적용
+        "https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg",
         "https://cdn.pixabay.com/photo/2016/02/13/12/26/aurora-1197753__340.jpg",
         "https://cdn.pixabay.com/photo/2015/02/24/15/41/wolf-647528__340.jpg",
         "https://cdn.pixabay.com/photo/2017/08/15/08/23/stars-2643089__340.jpg",
@@ -51,11 +53,70 @@ export default {
         "https://cdn.pixabay.com/photo/2020/07/27/14/34/forest-5442598__340.jpg",
         "https://cdn.pixabay.com/photo/2020/04/30/20/14/sky-5114501__340.jpg",
         "https://cdn.pixabay.com/photo/2016/11/18/22/58/stars-1837306__340.jpg"
-      ]
+      ],
+      users: [ // 사용자 이름/내용 정보
+        {"title": "이름1", "text": "내용1"},
+        {"title": "이름2", "text": "내용2"},
+        {"title": "이름3", "text": "내용3"},
+        {"title": "이름4", "text": "내용4"},
+      ],
+      touchStartX: null,
+      touchEndX: null,
+      minSwipeDistance: 30
     };
   },
-  created() {
-    this.currentIdx = Math.floor(Math.random() * this.images.length);
+  methods: {
+    handleMouseDown(event) {
+      this.touchStartX = event.clientX;
+      this.touchEndX = null;
+    },
+    handleMouseMove(event) {
+      this.touchEndX = event.clientX;
+    },
+    handleMouseUp() {
+      if (this.touchEndX !== null) {
+        if (this.touchEndX < this.touchStartX) {
+          this.left();
+        } else if (this.touchEndX > this.touchStartX) {
+          this.right();
+        }
+      }
+      this.touchStartX = null;
+      this.touchEndX = null;
+    },
+    handleTouchStart(event) {
+      this.touchStartX = event.touches[0].clientX;
+      this.touchEndX = null;
+    },
+    handleTouchMove(event) {
+      this.touchEndX = event.touches[0].clientX;
+    },
+    handleTouchEnd() {
+      if (this.touchEndX !== null) {
+        let distance = Math.abs(this.touchEndX - this.touchStartX);
+        if (distance > this.minSwipeDistance) {
+          if (this.touchEndX < this.touchStartX) {
+            this.left();
+          } else if (this.touchEndX > this.touchStartX) {
+            this.right();
+          }
+        }
+      }
+      this.touchStartX = null;
+      this.touchEndX = null;
+    },
+    right() { // 왼쪽에서 오른쪽으로 움직였을 때 호출
+      if (this.currentIdx > 0) {
+        this.currentIdx--;
+      }
+    },
+    left() { // 오른쪽에서 왼쪽으로 움직였을 때 호출
+      if (this.currentIdx + 1 >= this.users.length) {
+        // 새로운 사용자 정보를 로딩하는 코드
+        this.users.push({"title": "이름" + (this.users.length + 1), "text": "내용" + (this.users.length + 1)});
+      }
+      this.currentIdx++;
+    }
   }
 }
 </script>
