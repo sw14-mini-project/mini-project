@@ -1,7 +1,8 @@
 <template>
   <DefaultPage selected-label="search">
     <template v-slot:content>
-      <div class="main-card" @mousedown="handleMouseDown" @mousemove="handleMouseMove" @mouseup="handleMouseUp"
+      <div class="main-card" :style="{ transform: 'translateX(' + cardX + 'px)' }"
+       @mousedown="handleMouseDown" @mousemove="handleMouseMove" @mouseup="handleMouseUp"
        @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
         <div class="card-upper" :style="{ backgroundImage: 'url(' + images[currentIdx % images.length] + ')' }">
           <img class="card-image">
@@ -62,6 +63,7 @@ export default {
       ],
       touchStartX: null,
       touchEndX: null,
+      cardX: 0,
       minSwipeDistance: 30
     };
   },
@@ -72,8 +74,12 @@ export default {
     },
     handleMouseMove(event) {
       this.touchEndX = event.clientX;
+      if (this.touchStartX !== null) {
+        this.cardX = this.touchEndX - this.touchStartX;
+      }
     },
     handleMouseUp() {
+      this.cardX = 0;
       if (this.touchEndX !== null) {
         if (this.touchEndX < this.touchStartX) {
           this.left();
@@ -90,8 +96,12 @@ export default {
     },
     handleTouchMove(event) {
       this.touchEndX = event.touches[0].clientX;
+      if (this.touchStartX !== null) {
+        this.cardX = this.touchEndX - this.touchStartX;
+      }
     },
     handleTouchEnd() {
+      this.cardX = 0;
       if (this.touchEndX !== null) {
         let distance = Math.abs(this.touchEndX - this.touchStartX);
         if (distance > this.minSwipeDistance) {
