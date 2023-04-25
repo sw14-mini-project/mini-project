@@ -16,12 +16,12 @@
       </div>
 
       <div class="icons">
-        <div class="like-icon">
-
-        </div>
-        <div class="profile-icon">
-
-        </div>
+        <button class="like-icon" @click="likeAction">
+          <img :src="heartImg" alt="좋아요" style="width:100%; height: 100%;">
+        </button>
+        <button class="profile-icon" @click="profileAction">
+          <img :src="profileImg" alt="프로필" style="width:100%; height: 100%;">
+        </button>
       </div>
     </template>
   </DefaultPage>
@@ -44,6 +44,8 @@ export default {
   data() {
     return {
       currentIdx: 0,
+      heartImg: require("@/assets/heart.png"),
+      profileImg: require("@/assets/profile.png"),
       images: [ // 임의의 이미지 적용
         "https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg",
         "https://cdn.pixabay.com/photo/2016/02/13/12/26/aurora-1197753__340.jpg",
@@ -68,6 +70,12 @@ export default {
     };
   },
   methods: {
+    likeAction() {
+      // 좋아요 버튼을 눌렀을 때 호출
+    },
+    profileAction() {
+      // 프로필 버튼을 눌렀을 때 호출
+    },
     handleMouseDown(event) {
       this.touchStartX = event.clientX;
       this.touchEndX = null;
