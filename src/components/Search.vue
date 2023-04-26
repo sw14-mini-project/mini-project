@@ -43,8 +43,8 @@ export default {
     })
   },
   beforeCreate() {
-    this.database = getDatabase();
-    const usersRef = ref(this.database, 'users/');
+    const db = getDatabase();
+    const usersRef = ref(db, 'users/');
     onValue(usersRef, (snapshot) => {
       this.users = [];
       const data = snapshot.val();
@@ -77,16 +77,15 @@ export default {
       touchStartX: null,
       touchEndX: null,
       cardX: 0,
-      minSwipeDistance: 30,
-      database: null
+      minSwipeDistance: 30
     };
   },
   methods: {
     likeAction() {
-      this.database = getDatabase();
+      const db = getDatabase();
       const tempData = {}
       tempData[this.users[this.currentIdx]["key"]] = Date.now()
-      update(ref(this.database, "like/" + auth.currentUser.uid), tempData);
+      update(ref(db, "like/" + auth.currentUser.uid), tempData);
     },
     profileAction() {
       // 프로필 버튼을 눌렀을 때 호출
