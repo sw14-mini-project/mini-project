@@ -1,0 +1,94 @@
+#chatroom-root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0px;
+
+  width: 100%;
+  height: 100%;
+}
+
+#chatroom-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 20px;
+
+  width: 100%;
+  height: 26px;
+
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+  z-index: 1;
+
+  margin-bottom: 20px;
+}
+
+#chatroom-title {
+  width: 100%;
+  height: 16px;
+
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 16px;
+
+  color: #FFFFFF;
+
+  flex: none;
+  order: 0;
+  flex-grow: 1;
+}
+
+#chatroom-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 20px 0 0;
+  margin-bottom: 5px;
+  gap: 10px;
+
+  width: calc(100% + 24px);
+  height: calc(100% - 26px - 56px - 25px);
+
+  overflow-y: scroll;
+
+  flex: none;
+  order: 2;
+  align-self: stretch;
+  z-index: 2;
+}
+
+#chatroom-send {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  gap: 10px;
+
+  width: 100%;
+  height: 56px;
+
+  flex: none;
+  order: 3;
+  align-self: stretch;
+  z-index: 2;
+}
+
+#chatroom-main::-webkit-scrollbar {
+  width: 4px;
+}
+
+#chatroom-main::-webkit-scrollbar-thumb {
+  height: 30%;
+  background: $scrollbar-color;
+
+  border-radius: 10px;
+}
+
+#chatroom-main::-webkit-scrollbar-track {
+  background: $scrollbar-background-color;
+}

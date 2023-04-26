@@ -9,4 +9,13 @@ const gotoPage = (targetUrl, query) => {
     router.push(pushParam);
 }
 
-export {gotoPage}
+const gotoPageParam = (targetUrl, query) => {
+    let pushParam = {name: targetUrl};
+    if (typeof query != 'undefined') {
+        pushParam['params'] = query;
+    }
+    console.log(pushParam)
+    router.push(pushParam);
+}
+
+export {gotoPage, gotoPageParam}

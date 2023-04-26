@@ -186,6 +186,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  cursor: pointer;
 }
 
 .chat-item-title {
@@ -200,6 +202,11 @@
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
+
+  text-overflow: ellipsis;
+  text-wrap: none;
+  overflow: hidden;
+  white-space: nowrap;
 
   color: rgba(255, 255, 255, 0.5);
 }
