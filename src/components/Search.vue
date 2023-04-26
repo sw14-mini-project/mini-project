@@ -31,7 +31,7 @@
 import DefaultPage from "@/components/DefaultPage";
 import {auth} from "@/plugins/firebase";
 import {gotoPage} from "@/js/route";
-import {getDatabase, ref, onValue} from "firebase/database";
+import {getDatabase, ref, onValue, update} from "firebase/database";
 export default {
   name: "SearchComponent",
   components: {DefaultPage},
@@ -50,10 +50,9 @@ export default {
       const data = snapshot.val();
       delete data[auth.currentUser.uid]; // 현재 로그인한 사용자를 제외한 나머지 사용자 정보를 가져온다.
       
-      Object.values(data).forEach((user) => {
-        this.users.push({"title": user.username, "text": user.email});
+      Object.keys(data).forEach((key) => {
+        this.users.push({"title": data[key].username, "text": data[key].email, "key": key});
       });
-      console.log(this.users);
     });
   },
   data() {
@@ -73,7 +72,7 @@ export default {
         "https://cdn.pixabay.com/photo/2016/11/18/22/58/stars-1837306__340.jpg"
       ],
       users: [ // 사용자 이름/내용 정보 (ex. {"title": "이름", "text": 소개(기술 스택)})
-        {"title": "", "text": ""}
+        {"title": "", "text": "", "key": ""}
       ],
       touchStartX: null,
       touchEndX: null,
@@ -84,7 +83,10 @@ export default {
   },
   methods: {
     likeAction() {
-      // 좋아요 버튼을 눌렀을 때 호출
+      this.database = getDatabase();
+      const tempData = {}
+      tempData[this.users[this.currentIdx]["key"]] = Date.now()
+      update(ref(this.database, "like/" + auth.currentUser.uid), tempData);
     },
     profileAction() {
       // 프로필 버튼을 눌렀을 때 호출
