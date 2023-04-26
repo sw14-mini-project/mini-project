@@ -31,6 +31,7 @@
 import DefaultPage from "@/components/DefaultPage";
 import {auth} from "@/plugins/firebase";
 import {gotoPage} from "@/js/route";
+import {getDatabase, ref, onValue} from "firebase/database";
 export default {
   name: "SearchComponent",
   components: {DefaultPage},
@@ -40,6 +41,20 @@ export default {
         gotoPage("login")
       }
     })
+  },
+  beforeCreate() {
+    this.database = getDatabase();
+    const usersRef = ref(this.database, 'users/');
+    onValue(usersRef, (snapshot) => {
+      this.users = [];
+      const data = snapshot.val();
+      delete data[auth.currentUser.uid]; // 현재 로그인한 사용자를 제외한 나머지 사용자 정보를 가져온다.
+      
+      Object.values(data).forEach((user) => {
+        this.users.push({"title": user.username, "text": user.email});
+      });
+      console.log(this.users);
+    });
   },
   data() {
     return {
@@ -57,16 +72,14 @@ export default {
         "https://cdn.pixabay.com/photo/2020/04/30/20/14/sky-5114501__340.jpg",
         "https://cdn.pixabay.com/photo/2016/11/18/22/58/stars-1837306__340.jpg"
       ],
-      users: [ // 사용자 이름/내용 정보
-        {"title": "이름1", "text": "내용1"},
-        {"title": "이름2", "text": "내용2"},
-        {"title": "이름3", "text": "내용3"},
-        {"title": "이름4", "text": "내용4"},
+      users: [ // 사용자 이름/내용 정보 (ex. {"title": "이름", "text": 소개(기술 스택)})
+        {"title": "", "text": ""}
       ],
       touchStartX: null,
       touchEndX: null,
       cardX: 0,
-      minSwipeDistance: 30
+      minSwipeDistance: 30,
+      database: null
     };
   },
   methods: {
@@ -129,11 +142,9 @@ export default {
       }
     },
     left() { // 오른쪽에서 왼쪽으로 움직였을 때 호출
-      if (this.currentIdx + 1 >= this.users.length) {
-        // 새로운 사용자 정보를 로딩하는 코드
-        this.users.push({"title": "이름" + (this.users.length + 1), "text": "내용" + (this.users.length + 1)});
+      if (this.currentIdx + 1 < this.users.length) {
+        this.currentIdx++;
       }
-      this.currentIdx++;
     }
   }
 }
