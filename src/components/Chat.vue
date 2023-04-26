@@ -14,11 +14,11 @@
           <div id="chat-new-people">
             <div
                 class="chat-new-profile"
-                v-for="i in 10"
-                :key="i"
+                v-for="i in likePeople"
+                :key="i.uid"
             >
               <div class="chat-new-profile-picture"></div>
-              <div class="chat-new-profile-name">{{ '이름' + i }}</div>
+              <div class="chat-new-profile-name">{{ i.uid }}</div>
             </div>
           </div>
         </div>
@@ -58,18 +58,51 @@
 
 <script>
 import DefaultPage from "@/components/DefaultPage";
-import {auth} from "@/plugins/firebase";
+import { database, auth } from "@/plugins/firebase";
 import {gotoPage} from "@/js/route";
+import { ref, onValue} from "firebase/database";
+import {getUserInform} from "@/js/realtime-database";
 
-const setDatabase
+const setLikeEventListener = (context, uid) => {
+  onValue(ref(database, `like/`), async (snapshot) => {
+    context.likePeople = []
+    const data = snapshot.val();
+    const myLike = data[uid]
+    for (let key in myLike) {
+      const likePersonTime = new Date(myLike[key])
+      try {
+        const likePersonTime2 = new Date(data[key][uid])
+        // console.log(likePersonTime, likePersonTime2)
+        const diff = Math.abs(likePersonTime - likePersonTime2)
+        const diffDays = diff / (1000 * 60 * 60 * 24)
+        if (diffDays <= 30) {
+          const userInform = await getUserInform(this, database, key)
+          console.log(userInform)
+          if (userInform !== null) {
+            context.likePeople.push(userInform)
+          }
+        }
+      } catch (e) {
+        console.log(`${key} not exist`)
+      }
+    }
+  });
+}
 
 export default {
   name: "ChatComponent",
   components: {DefaultPage},
-  setup() {
+  data() {
+    return {
+      likePeople: []
+    }
+  },
+  beforeMount() {
     auth.onAuthStateChanged((user) => {
       if (user === null) {
         gotoPage("login")
+      } else {
+        setLikeEventListener(this, user.uid)
       }
     })
   },
