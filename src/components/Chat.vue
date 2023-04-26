@@ -9,7 +9,7 @@
         <div id="chat-new-talk">
           <div>
             <div class="chat-new-title">새 대화</div>
-            <div id="chat-new-summary">서로 좋아요를 표현한 사람이 표시됩니다.</div>
+            <div id="chat-new-summary">30일 이내에 서로 좋아요를 표현한 사람이 표시됩니다.</div>
           </div>
           <div id="chat-new-people">
             <div
@@ -18,7 +18,7 @@
                 :key="i.uid"
             >
               <div class="chat-new-profile-picture"></div>
-              <div class="chat-new-profile-name">{{ i.uid }}</div>
+              <div class="chat-new-profile-name">{{ i.username }}</div>
             </div>
           </div>
         </div>
@@ -60,8 +60,7 @@
 import DefaultPage from "@/components/DefaultPage";
 import { database, auth } from "@/plugins/firebase";
 import {gotoPage} from "@/js/route";
-import { ref, onValue} from "firebase/database";
-import {getUserInform} from "@/js/realtime-database";
+import {ref, onValue, get, child} from "firebase/database";
 
 const setLikeEventListener = (context, uid) => {
   onValue(ref(database, `like/`), async (snapshot) => {
@@ -76,11 +75,19 @@ const setLikeEventListener = (context, uid) => {
         const diff = Math.abs(likePersonTime - likePersonTime2)
         const diffDays = diff / (1000 * 60 * 60 * 24)
         if (diffDays <= 30) {
-          const userInform = await getUserInform(this, database, key)
-          console.log(userInform)
-          if (userInform !== null) {
-            context.likePeople.push(userInform)
-          }
+          get(child(ref(database), `users/${key}/`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const userInform = snapshot.toJSON()
+              console.log(userInform)
+              if (userInform !== null) {
+                context.likePeople.push(userInform)
+              }
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
         }
       } catch (e) {
         console.log(`${key} not exist`)
