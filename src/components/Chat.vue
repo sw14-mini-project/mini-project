@@ -60,6 +60,9 @@
 import DefaultPage from "@/components/DefaultPage";
 import {auth} from "@/plugins/firebase";
 import {gotoPage} from "@/js/route";
+
+const setDatabase
+
 export default {
   name: "ChatComponent",
   components: {DefaultPage},
@@ -83,6 +86,9 @@ export default {
         e.preventDefault();
       }
     });
+  },
+  methods: {
+
   }
 }
 </script>
