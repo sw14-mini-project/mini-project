@@ -5,7 +5,7 @@
         <div id="search-top">
           <div id="search-top-title">찾기</div>
         </div>
-        <div id="search-main-section">
+        <div v-if="users.length > 0" id="search-main-section">
           <Carousel
               v-bind="carset" style="width: 100%;height: 100%;max-height: 500px;"
               @slide-start="slideStart"
@@ -44,7 +44,8 @@
             </button>
           </div>
         </div>
-        <bottom-sheet :show="showBottomSheet" :data="users[currentIdx]" @close="showBottomSheet = false"/>
+        <bottom-sheet v-if="users.length > 0" :show="showBottomSheet" :data="users[currentIdx]" @close="showBottomSheet = false"/>
+        <div v-else style="order: 1;flex: none;">다른 사람이 없습니다...</div>
       </div>
 
       <v-snackbar
