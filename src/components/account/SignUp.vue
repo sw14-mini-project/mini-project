@@ -105,12 +105,12 @@ export default {
   },
   setup() {
     let once = 1
-    auth.onAuthStateChanged((user) => {
+    var unsubscribe = auth.onAuthStateChanged((user) => {
       console.log(once)
       if (user !== null && once === 1) {
         gotoPage("chat")
       }
-      once = 0
+      unsubscribe()
     })
   },
   beforeMount() {
@@ -156,7 +156,7 @@ export default {
         });
         gotoPage("chat")
       } catch (e) {
-        await auth.onAuthStateChanged(async (user) => {
+        let unsubscribe = await auth.onAuthStateChanged(async (user) => {
           if (user !== null) {
             await user.delete()
           }
@@ -164,6 +164,7 @@ export default {
           this.snackbarShow = false
           this.snackbarMsg = errorMessage
           this.snackbarShow = true
+          unsubscribe()
         })
       } finally {
         this.showLoadingDialog = false
