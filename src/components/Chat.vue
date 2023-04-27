@@ -11,7 +11,7 @@
             <div class="chat-new-title">새 대화</div>
             <div id="chat-new-summary">30일 이내에 서로 좋아요를 표현한 사람이 표시됩니다.</div>
           </div>
-          <div id="chat-new-people">
+          <div v-if="likePeople.length > 0" id="chat-new-people" @wheel="likePeopleWheel">
             <div
                 class="chat-new-profile"
                 v-for="i in likePeople"
@@ -22,6 +22,7 @@
               <div class="chat-new-profile-name">{{ i.username }}</div>
             </div>
           </div>
+          <div v-else style="font-size: 12px;color: rgba(255,255,255,0.5)">아쉽게도 마음이 통한 사람이 없네요!</div>
         </div>
 
         <div id="chat-room-root">
@@ -163,20 +164,6 @@ export default {
       }
     })
   },
-  mounted() {
-    const container = document.getElementById("chat-new-people");
-    container.addEventListener("wheel", function (e) {
-      console.log(e)
-      if (e.deltaY > 0) {
-        container.scrollLeft += 100;
-        e.preventDefault();
-      }
-      else {
-        container.scrollLeft -= 100;
-        e.preventDefault();
-      }
-    });
-  },
   methods: {
     makeChat(partnerUid) {
       console.log(auth.currentUser.uid, partnerUid)
@@ -192,6 +179,17 @@ export default {
     },
     clickChat(chatId) {
       gotoPageParam('chatroom', {chatId: chatId})
+    },
+    likePeopleWheel(e) {
+      console.log(e)
+      if (e.deltaY > 0) {
+        e.target.scrollLeft += 100;
+        e.preventDefault();
+      }
+      else {
+        e.target.scrollLeft -= 100;
+        e.preventDefault();
+      }
     }
   }
 }
