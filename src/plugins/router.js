@@ -5,6 +5,7 @@ import SettingComponent from "@/components/Setting";
 import SearchComponent from "@/components/Search";
 import LoginComponent from "@/components/account/Login";
 import SignUpComponent from "@/components/account/SignUp";
+import ChatRoomComponent from "@/components/ChatRoom";
 
 // Vue 라우터 인스턴스 생성
 const router = new createRouter({
@@ -17,6 +18,7 @@ const router = new createRouter({
         {path: '/search', component: SearchComponent, name: 'search'},
         {path: '/login', component: LoginComponent, name: 'login'},
         {path: '/signup', component: SignUpComponent, name: 'signup'},
+        {path: '/chatroom/:chatId', component: ChatRoomComponent, name: 'chatroom', props: true},
     ]
 });
 
