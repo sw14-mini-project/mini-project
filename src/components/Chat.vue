@@ -62,7 +62,7 @@
 import DefaultPage from "@/components/DefaultPage";
 import { database, auth } from "@/plugins/firebase";
 import {gotoPage, gotoPageParam} from "@/js/route";
-import {ref, onValue, get, child, push} from "firebase/database";
+import {ref, onValue, get, child, push, remove} from "firebase/database";
 
 const setLikeEventListener = (context, uid) => {
   onValue(ref(database, `like/`), async (snapshot) => {
@@ -174,7 +174,8 @@ export default {
         },
         madeTime: Date.now()
       }).then(() => {
-
+        remove(ref(database, `like/${auth.currentUser.uid}/${partnerUid}`));
+        remove(ref(database, `like/${partnerUid}/${auth.currentUser.uid}`));
       });
     },
     clickChat(chatId) {
