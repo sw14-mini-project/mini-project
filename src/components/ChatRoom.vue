@@ -5,7 +5,7 @@
         <div id="chatroom-top">
           <div id="chatroom-title">{{ this.partnerName }}과 채팅방</div>
         </div>
-        <div id="chatroom-main">
+        <div id="chatroom-main" v-bind="element">
           <ChatBox
               v-for="a in this.cahts"
               :key="a.text"
@@ -23,7 +23,7 @@
                 append-inner-icon="mdi-send-circle"
                 single-line
                 hide-details
-                @click:appendInner="clickSend"
+                @keyup.enter="enterSend"
             ></v-text-field>
           </v-container>
         </div>
@@ -38,6 +38,7 @@ import {child, get, onValue, push, ref} from "firebase/database";
 import {auth, database} from "@/plugins/firebase";
 import {gotoPage} from "@/js/route";
 import ChatBox from "@/components/chat/ChatBox";
+
 export default {
   name: "ChatRoomComponent",
   components: {ChatBox, DefaultPage},
@@ -54,8 +55,17 @@ export default {
       partnerName: '',
       myName: '',
       cahts: [],
-      text: ''
+      text: '',
+      element: ''
     }
+  },
+  mounted() {
+    this.$nextTick(function () {
+      const c = document.getElementById('chatroom-main')
+      c.scrollTo(0, 1000)
+      // console.log(c);
+      // console.log(c.clientHeight)
+    });
   },
   created() {
     if (this.chatId === '') gotoPage('chat')
@@ -100,13 +110,16 @@ export default {
             });
 
             let keys = Object.keys(data.msgs);
-            keys.sort(function(a, b) { return data.msgs[a].time - data.msgs[b].time });
+            keys = keys.reverse()
+            // keys.sort(function(a, b) { return data.msgs[b].time - data.msgs[a].time });
 
             this.cahts = []
             for (let k of keys) {
               this.cahts.push(data.msgs[k])
             }
             console.log(this.cahts)
+
+            // scrollToBottom()
           } else {
             gotoPage('chat')
           }
@@ -115,18 +128,33 @@ export default {
     })
   },
   methods: {
+    enterSend(e) {
+      this.clickSend()
+      e.preventDefault()
+    },
     clickSend() {
       if (this.text === '') {
         return
       }
+      const text = this.text
+      this.text = ''
+
       push(ref(database, `chats/${this.chatId}/msgs`), {
         person: this.myUid,
-        text: this.text,
+        text: text,
         time: Date.now()
-      }).then(() => {
-        this.text = ''
-      });
-    }
+      }).catch(() => {
+        this.text = text
+      })
+    },
+    // scrollToBottom() {
+    //   // document.getElementById('chatroom-main').scrollIntoView(false);
+    //   const chatElement = document.getElementById('chatroom-main')
+    //   console.log(chatElement)
+    //   // chatElement[chatElement.length - 1].scrollIntoView({behavior: 'smooth'})
+    //   // chatElement.scrollTop = chatElement.scrollHeight;
+    //   chatElement.scroll({ top: chatElement.scrollHeight, behavior: "smooth"})
+    // }
   }
 }
 </script>
